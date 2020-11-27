@@ -17,13 +17,46 @@ SCREEN  = pygame.display.set_mode(SCREEN_SIZE)
 CLOCK   = pygame.time.Clock()
 FPS     = 30
 
-BG_COLOUR = [0, 0, 0]
+BG_COLOUR = [246, 166, 247]
 IS_RUNNING = True
 
+class player :
 
-playerSprite = pygame.image.load("../Art/spr_Player2.gif")
-playerRect = playerSprite.get_rect()
-playerSpeed = 5
+    points = 0
+    lives = 0
+    Speed_Defualt = 5
+    Image_Defualt = "../Art/spr_Player2.gif"
+
+    playerSprite = None
+    playerRect = None
+    playerSpeed = 3
+
+    def __init__(self, referentie = Image_Defualt):
+        self.playerSprite = pygame.image.load(referentie)
+        self.playerRect = self.playerSprite.get_rect()
+
+    
+
+    def Update(self):
+        if (KEYS_DOWN[K_UP]):
+            self.playerRect.y -= self.playerSpeed
+        elif (KEYS_DOWN[K_DOWN]):
+            self.playerRect.y += self.playerSpeed
+        if (KEYS_DOWN[K_LEFT]):
+            self.playerRect.x -= self.playerSpeed
+        elif (KEYS_DOWN[K_RIGHT]):
+            self.playerRect.x += self.playerSpeed
+        
+
+    
+    def draw(self, screenSurface):
+        screenSurface.blit(self.playerSprite, self.playerRect)
+
+
+
+
+knightInstance = player()
+
 
 
 while IS_RUNNING:
@@ -46,16 +79,7 @@ while IS_RUNNING:
     # ------------------------------------------------
     # UPDATE GAME LOGIC:
     # ------------------------------------------------
-    if (KEYS_DOWN[K_UP]):
-        playerRect.y -= playerSpeed
-    elif (KEYS_DOWN[K_DOWN]):
-        playerRect.y += playerSpeed
-
-    if (KEYS_DOWN[K_LEFT]):
-        playerRect.x -= playerSpeed
-    elif (KEYS_DOWN[K_RIGHT]):
-        playerRect.x += playerSpeed
-    
+    knightInstance.Update()
 
     # ------------------------------------------------
     # DRAWING INSTRUCTIONS
@@ -64,9 +88,10 @@ while IS_RUNNING:
     # If you don't, you'll draw on top of what was previously drawn. See for yourself by removing/commenting this line... :)
     SCREEN.fill(BG_COLOUR)
 
+    knightInstance.draw(SCREEN)
+
+
     # Then draw sprites on the current location:
-    SCREEN.blit(playerSprite, playerRect)
-    
     # Finally refresh the entire screen of this application window:
     pygame.display.flip()
 
